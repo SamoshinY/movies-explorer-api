@@ -3,7 +3,6 @@ const express = require('express');
 const cookieParser = require('cookie-parser');
 const helmet = require('helmet');
 
-const { PORT = 3000 } = process.env;
 const app = express();
 const { errors } = require('celebrate');
 const mongoose = require('mongoose');
@@ -13,7 +12,10 @@ const errorsHandler = require('./middlewares/handler-errors');
 const rateLimiter = require('./middlewares/rate-limiter');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
-mongoose.connect('mongodb://127.0.0.1:27017/bitfilmsdb');
+const { PORT, DB } = process.env;
+const { DEF_PORT, DEF_DB } = require('./utils/config');
+
+mongoose.connect(DB || DEF_DB);
 
 app
   .options('*', corsHandler)
@@ -27,4 +29,4 @@ app
   .use(errorLogger)
   .use(errors())
   .use(errorsHandler)
-  .listen(PORT);
+  .listen(PORT || DEF_PORT);

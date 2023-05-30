@@ -76,7 +76,7 @@ module.exports.login = (req, res, next) => {
 };
 
 module.exports.deleteJwt = (req, res, next) => {
-  res.cookie('jwt', '');
+  res.clearCookie('jwt');
   res.send({ message: 'successful exit' });
   next();
 };
