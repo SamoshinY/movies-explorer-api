@@ -3,6 +3,8 @@ const { bodyUser } = require('../middlewares/request-validation');
 
 const { getCurrentUser, updateProfile } = require('../controllers/users');
 
-userRouter.get('/me', getCurrentUser).patch('/me', bodyUser, updateProfile);
+userRouter
+  .get('/me', bodyUser, getCurrentUser)
+  .patch('/me', bodyUser, updateProfile);
 
 module.exports = userRouter;
