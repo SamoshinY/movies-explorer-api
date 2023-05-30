@@ -23,7 +23,7 @@ app
   .use(rateLimiter)
   .use(cookieParser())
   .use(requestLogger)
-  .use(router)
+  .use('/api', router)
   .use(errorLogger)
   .use(errors())
   .use(errorsHandler)
