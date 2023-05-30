@@ -1,9 +1,8 @@
 const allowedCors = [
-  "https://praktikum.tk",
-  "http://praktikum.tk",
-  "http://samoshin.nomoredomains.monster",
-  "https://samoshin.nomoredomains.monster",
-  "localhost:3000",
+  'http://samoshin-diplom-front.nomoredomains.monster',
+  'https://samoshin-diplom-front.nomoredomains.monster',
+  'localhost:3000',
+  '127.0.0.1:3000',
 ];
 
 module.exports = allowedCors;
