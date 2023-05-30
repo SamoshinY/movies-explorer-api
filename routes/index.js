@@ -10,7 +10,7 @@ const auth = require('../middlewares/auth');
 router
   .use('/signup', signupRouter)
   .use('/signin', signinRouter)
-  .use('/sigout', signoutRouter)
+  .use('/signout', signoutRouter)
   .use('/users', auth, userRouter)
   .use('/movies', auth, movieRouter)
   .use('*', PageNotFoundRouter);
