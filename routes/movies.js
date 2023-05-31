@@ -3,12 +3,12 @@ const { bodyMovie, idMovie } = require('../middlewares/request-validation');
 
 const {
   createMovie,
-  getMovies,
+  getMoviesByOwnerId,
   deleteMovie,
 } = require('../controllers/movies');
 
 movieRouter
-  .get('/', getMovies)
+  .get('/', getMoviesByOwnerId)
   .post('/', bodyMovie, createMovie)
   .delete('/:movieId', idMovie, deleteMovie);
 

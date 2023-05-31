@@ -2,26 +2,33 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
 const AuthError = require('../utils/errors/AuthError');
+const {
+  RequiredFieldError,
+  MinLengthError,
+  MaxLengthError,
+  InvalidEmailError,
+} = require('../utils/errors/validationErrors');
 
 const userSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      minlength: [2, 'Минимальная длина строки - два символа'],
-      maxlength: [30, 'Максимальная длина строки - тридцать символов'],
+      required: [true, RequiredFieldError],
+      minlength: [2, MinLengthError],
+      maxlength: [30, MaxLengthError],
     },
     email: {
       type: String,
-      required: [true, 'Поле email обязательно для заполнения'],
+      required: [true, RequiredFieldError],
       unique: true,
       validate: {
         validator: (value) => validator.isEmail(value),
-        message: 'Некорректный email-адрес',
+        message: InvalidEmailError,
       },
     },
     password: {
       type: String,
-      required: [true, 'Поле password обязательно для заполнения'],
+      required: [true, RequiredFieldError],
       select: false,
     },
   },
@@ -33,16 +40,12 @@ const userSchema = new mongoose.Schema(
           .select('+password')
           .then((user) => {
             if (!user) {
-              return Promise.reject(
-                new AuthError('Неправильное имя пользователя или пароль')
-              );
+              return Promise.reject(new AuthError());
             }
 
             return bcrypt.compare(password, user.password).then((matched) => {
               if (!matched) {
-                return Promise.reject(
-                  new AuthError('Неправильное имя пользователя или пароль')
-                );
+                return Promise.reject(new AuthError());
               }
 
               return user;

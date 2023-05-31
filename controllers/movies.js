@@ -1,10 +1,11 @@
 const Movie = require('../models/movie');
 const { COMPLETED } = require('../utils/response-status-code');
 const ForbiddenError = require('../utils/errors/ForbiddenError');
+const dataDeleted = require('../utils/messages');
 
-module.exports.getMovies = (req, res, next) => {
-  Movie.find({})
-    .populate(['owner'])
+module.exports.getMoviesByOwnerId = (req, res, next) => {
+  Movie.find({ owner: req.user._id })
+    .orFail()
     .then((movies) => res.send(movies))
     .catch(next);
 };
@@ -50,7 +51,7 @@ module.exports.deleteMovie = (req, res, next) => {
       if (movie.owner.toString() === req.user._id) {
         Movie.deleteOne(movie._id)
           .orFail()
-          .then(res.send({ message: 'Фильм удален' }))
+          .then(res.send({ message: dataDeleted }))
           .catch(next);
       } else {
         next(new ForbiddenError());

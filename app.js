@@ -9,8 +9,8 @@ const mongoose = require('mongoose');
 const corsHandler = require('./middlewares/cors-processing');
 const router = require('./routes/index');
 const errorsHandler = require('./middlewares/handler-errors');
-const rateLimiter = require('./middlewares/rate-limiter');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
+const rateLimiter = require('./middlewares/rate-limiter');
 
 const { PORT, DB } = process.env;
 const { DEF_PORT, DEF_DB } = require('./utils/config');

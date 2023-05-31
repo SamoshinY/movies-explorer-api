@@ -1,6 +1,7 @@
 module.exports = class AuthError extends Error {
-  constructor(message) {
-    super(message);
+  constructor() {
+    super();
+    this.message = 'Неправильное имя пользователя или пароль';
     this.statusCode = 401;
   }
 };

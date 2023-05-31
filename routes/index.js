@@ -10,9 +10,9 @@ const auth = require('../middlewares/auth');
 router
   .use('/signup', signupRouter)
   .use('/signin', signinRouter)
-  .use('/signout', signoutRouter)
+  .use('/signout', auth, signoutRouter)
   .use('/users', auth, userRouter)
   .use('/movies', auth, movieRouter)
-  .use('*', PageNotFoundRouter);
+  .use('*', auth, PageNotFoundRouter);
 
 module.exports = router;

@@ -4,6 +4,12 @@ const AuthError = require('../utils/errors/AuthError');
 const DuplicateKeyError = require('../utils/errors/DuplicateKeyError');
 const ForbiddenError = require('../utils/errors/ForbiddenError');
 const NotFoundError = require('../utils/errors/NotFoundError');
+const {
+  documentNotFound,
+  incorrectId,
+  somWrong,
+  incorrectData,
+} = require('../utils/messages');
 
 const {
   NOT_FOUND_ERROR,
@@ -18,16 +24,14 @@ module.exports = (err, req, res, next) => {
   switch (true) {
     case err instanceof ValidationError:
       return res.status(BAD_DATA_ERROR).send({
-        message: `Введены некорректные двнные: ${Object.values(err.errors)
+        message: `${incorrectData} ${Object.values(err.errors)
           .map((e) => e.message)
           .join(', ')}`,
       });
     case err instanceof DocumentNotFoundError:
-      return res
-        .status(NOT_FOUND_ERROR)
-        .send({ message: 'Запрашиваемый документ не найден' });
+      return res.status(NOT_FOUND_ERROR).send({ message: documentNotFound });
     case err instanceof CastError:
-      return res.status(BAD_DATA_ERROR).send({ message: 'Некорректный Id' });
+      return res.status(BAD_DATA_ERROR).send({ message: incorrectId });
     case err instanceof DuplicateKeyError:
       return res.status(DUPLICATE_KEY_ERROR).send({ message: err.message });
     case err instanceof ForbiddenError:
@@ -38,7 +42,7 @@ module.exports = (err, req, res, next) => {
       return res.status(NOT_FOUND_ERROR).send({ message: err.message });
     default:
       res.status(DEFAULT_ERROR).send({
-        message: `Что-то пошло не так... ${err.name}: ${err.message}`,
+        message: `${somWrong} ${err.name}: ${err.message}`,
       });
   }
   return next();

@@ -2,6 +2,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const DuplicateKeyError = require('../utils/errors/DuplicateKeyError');
+const { dataDeleted, successfulAuthorization } = require('../utils/messages');
 
 const { NODE_ENV, JWT_SECRET } = process.env;
 
@@ -24,7 +25,12 @@ const updateData = (req, res, next) => {
   })
     .orFail()
     .then((user) => res.send(user))
-    .catch(next);
+    .catch((err) => {
+      if (err.code === 11000) {
+        return next(new DuplicateKeyError());
+      }
+      return next();
+    });
 };
 
 module.exports.updateProfile = (req, res, next) => {
@@ -70,13 +76,13 @@ module.exports.login = (req, res, next) => {
         httpOnly: true,
         sameSite: true,
       });
-      res.json({ message: 'Вы успешно прошли авторизацию!' });
+      res.json({ message: successfulAuthorization });
     })
     .catch(next);
 };
 
 module.exports.deleteJwt = (req, res, next) => {
   res.clearCookie('jwt');
-  res.send({ message: 'successful exit' });
+  res.send({ message: dataDeleted });
   next();
 };

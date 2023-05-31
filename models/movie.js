@@ -1,50 +1,54 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
+const {
+  requiredFieldError,
+  invalidURLError,
+} = require('../utils/errors/validationErrors');
 
 const movieSchema = new mongoose.Schema(
   {
     country: {
       type: String,
-      required: [true, 'Обязательное поле country не заполнено'],
+      required: [true, requiredFieldError],
     },
     director: {
       type: String,
-      required: [true, 'Обязательное поле director не заполнено'],
+      required: [true, requiredFieldError],
     },
     duration: {
       type: Number,
-      required: [true, 'Обязательное поле duration не заполнено'],
+      required: [true, requiredFieldError],
     },
     year: {
       type: String,
-      required: [true, 'Обязательное поле year не заполнено'],
+      required: [true, requiredFieldError],
     },
     description: {
       type: String,
-      required: [true, 'Обязательное поле description не заполнено'],
+      required: [true, requiredFieldError],
     },
     image: {
       type: String,
-      required: [true, 'Обязательное поле image не заполнено'],
+      required: [true, requiredFieldError],
       validate: {
         validator: (value) => validator.isURL(value),
-        message: 'Некорректная ссылка',
+        message: invalidURLError,
       },
     },
     trailer: {
       type: String,
-      required: [true, 'Обязательное поле trailer не заполнено'],
+      required: [true, requiredFieldError],
       validate: {
         validator: (value) => validator.isURL(value),
-        message: 'Некорректная ссылка',
+        message: invalidURLError,
       },
     },
     thumbnail: {
       type: String,
-      required: [true, 'Обязательное поле thumbnail не заполнено'],
+      required: [true, requiredFieldError],
       validate: {
         validator: (value) => validator.isURL(value),
-        message: 'Некорректная ссылка',
+        message: invalidURLError,
       },
     },
     owner: {
@@ -58,11 +62,11 @@ const movieSchema = new mongoose.Schema(
     },
     nameRU: {
       type: String,
-      required: [true, 'Обязательное поле nameRU не заполнено'],
+      required: [true, requiredFieldError],
     },
     nameEN: {
       type: String,
-      required: [true, 'Обязательное поле nameEN не заполнено'],
+      required: [true, requiredFieldError],
     },
   },
   { versionKey: false }
