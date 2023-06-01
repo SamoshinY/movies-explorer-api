@@ -8,6 +8,7 @@ const {
   MaxLengthError,
   InvalidEmailError,
 } = require('../utils/errors/validationErrors');
+const { incorrectCredentials } = require('../utils/messages');
 
 const userSchema = new mongoose.Schema(
   {
@@ -40,12 +41,12 @@ const userSchema = new mongoose.Schema(
           .select('+password')
           .then((user) => {
             if (!user) {
-              return Promise.reject(new AuthError());
+              return Promise.reject(new AuthError(incorrectCredentials));
             }
 
             return bcrypt.compare(password, user.password).then((matched) => {
               if (!matched) {
-                return Promise.reject(new AuthError());
+                return Promise.reject(new AuthError(incorrectCredentials));
               }
 
               return user;

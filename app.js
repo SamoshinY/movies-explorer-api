@@ -6,10 +6,10 @@ const helmet = require('helmet');
 const app = express();
 const { errors } = require('celebrate');
 const mongoose = require('mongoose');
+const { requestLogger, errorLogger } = require('./middlewares/logger');
 const corsHandler = require('./middlewares/cors-processing');
 const router = require('./routes/index');
 const errorsHandler = require('./middlewares/handler-errors');
-const { requestLogger, errorLogger } = require('./middlewares/logger');
 const rateLimiter = require('./middlewares/rate-limiter');
 
 const { PORT, DB } = process.env;
@@ -22,11 +22,11 @@ app
   .use(corsHandler)
   .use(express.json())
   .use(helmet())
+  .use(errorLogger)
   .use(rateLimiter)
   .use(cookieParser())
   .use(requestLogger)
   .use('/api', router)
-  .use(errorLogger)
   .use(errors())
   .use(errorsHandler)
   .listen(PORT || DEF_PORT);

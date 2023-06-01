@@ -2,7 +2,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const DuplicateKeyError = require('../utils/errors/DuplicateKeyError');
-const { dataDeleted, successfulAuthorization } = require('../utils/messages');
+const { deletedData, successfulAuthorization } = require('../utils/messages');
 
 const { NODE_ENV, JWT_SECRET } = process.env;
 
@@ -83,6 +83,6 @@ module.exports.login = (req, res, next) => {
 
 module.exports.deleteJwt = (req, res, next) => {
   res.clearCookie('jwt');
-  res.send({ message: dataDeleted });
+  res.send({ message: deletedData });
   next();
 };
