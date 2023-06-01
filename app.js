@@ -22,11 +22,11 @@ app
   .use(corsHandler)
   .use(express.json())
   .use(helmet())
-  .use(errorLogger)
+  .use(requestLogger)
   .use(rateLimiter)
   .use(cookieParser())
-  .use(requestLogger)
   .use('/api', router)
+  .use(errorLogger)
   .use(errors())
   .use(errorsHandler)
   .listen(PORT || DEF_PORT);
