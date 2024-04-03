@@ -29,4 +29,6 @@ app
   .use(errorLogger)
   .use(errors())
   .use(errorsHandler)
-  .listen(PORT || DEF_PORT);
+  .listen(PORT || DEF_PORT, () => {
+    console.log(`App listening on port ${PORT || DEF_PORT}`);
+  });
